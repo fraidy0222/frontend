@@ -12,7 +12,7 @@
               @submit.prevent="login"
             >
               <v-text-field
-                v-model="nameUser"
+                v-model="username"
                 :rules="userRules"
                 required
                 label="Usuario"
@@ -24,7 +24,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="password"
-                :rules="[passwordRules.length(6)]"
+                :rules="[passwordRules.length(3)]"
                 required
                 id="password"
                 label="Contraseña"
@@ -76,9 +76,10 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
-    nameUser: "",
+    username: "",
     password: "",
     loading: false,
     pregresColor: "",
@@ -100,59 +101,33 @@ export default {
   }),
   methods: {
     login() {
-      this.$router.push("/admin");
+      axios.interceptors.request.use(
+        (config) => {
+          this.loading = true;
+          return config;
+        },
+        (error) => {
+          this.loading = false;
+          return Promise.reject(error);
+        }
+      );
+
+      // Add a response interceptor
+      axios.interceptors.response.use(
+        (response) => {
+          this.loading = false;
+          return response;
+        },
+        (error) => {
+          this.loading = false;
+          return Promise.reject(error);
+        }
+      );
+      this.$store.dispatch("logIn", {
+        username: this.username,
+        password: this.password,
+      });
     },
   },
-  //   methods: {
-  //     login: function () {
-  //       axios.interceptors.request.use(
-  //         (config) => {
-  //           this.loading = true;
-  //           return config;
-  //         },
-  //         (error) => {
-  //           this.loading = false;
-  //           return Promise.reject(error);
-  //         }
-  //       );
-
-  //       // Add a response interceptor
-  //       axios.interceptors.response.use(
-  //         (response) => {
-  //           this.loading = false;
-  //           return response;
-  //         },
-  //         (error) => {
-  //           this.loading = false;
-  //           return Promise.reject(error);
-  //         }
-  //       );
-  //       axios
-  //         .post("api/login", { name: this.nameUser, password: this.password })
-  //         .then((res) => {
-  //           localStorage.setItem("token", res.data.user.api_token);
-  //           this.$store.commit("login", res.data.user);
-  //           // localStorage.setItem("role", res.data.user.role.name);
-  //           if (res.data.user.role.name == "Administrador") {
-  //             this.$router.push("/admin/inicio");
-  //           } else if (res.data.user.role.name == "Editor") {
-  //             this.$router
-  //               .push("/editor")
-  //               .then((res) => {
-  //                 //console.log(res.data.editor);
-  //               })
-  //               .catch((error) => {
-  //                 // console.log(error.response)
-  //               });
-  //           } else if (res.data.user.role.name == "Usuario UEB") {
-  //             this.$router.push("/usuario_ueb");
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           this.text = error.response.data.status;
-  //           this.snackbar = true;
-  //         });
-  //     },
-  //   },
 };
 </script>

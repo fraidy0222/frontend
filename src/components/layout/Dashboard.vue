@@ -7,7 +7,7 @@
     >
       <!-- Aplicaciones -->
       <v-list dense>
-        <v-list-group :value="true" prepend-icon="mdi-apps">
+        <v-list-group :value="false" prepend-icon="mdi-apps">
           <template v-slot:activator>
             <v-list-item-title>Aplicaciones</v-list-item-title>
           </template>
@@ -23,29 +23,9 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <!-- End Aplicaciones -->
-      <!-- Ofimática -->
-      <!-- <v-list>
-        <v-list-group :value="true" prepend-icon="mdi-account-circle">
-          <template v-slot:activator>
-            <v-list-item-title>Ofimática</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in ofimatica"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list> -->
-      <!-- End Ofimática -->
       <!-- Automática -->
       <v-list dense>
-        <v-list-group :value="true" prepend-icon="mdi-head-cog-outline">
+        <v-list-group :value="false" prepend-icon="mdi-head-cog-outline">
           <template v-slot:activator>
             <v-list-item-title>Automática</v-list-item-title>
           </template>
@@ -61,7 +41,6 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <!-- End Automática -->
       <!-- Comunicaciones -->
       <v-list dense>
         <v-list-group :value="false" prepend-icon="mdi-radio-tower">
@@ -80,8 +59,7 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <!-- End Comunicaciones -->
-      <!-- Administración -->
+      <!-- Administracion -->
       <v-list dense>
         <v-list-group :value="false" prepend-icon="mdi-home-edit-outline">
           <template v-slot:activator>
@@ -99,7 +77,74 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <!-- End Administración -->
+      <!-- Ofimática -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-desktop-tower-monitor">
+          <template v-slot:activator>
+            <v-list-item-title>Ofimática</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="(item, i) in ofimatica"
+            :key="i"
+            :to="item.action"
+          >
+            <v-list-item-content class="ml-14">
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+      <!-- Recurso humanos -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-account-cog-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Recursos.H</v-list-item-title>
+          </template>
+
+          <v-list-item v-for="(item, i) in humanos" :key="i" :to="item.action">
+            <v-list-item-content class="ml-14">
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+      <!-- Seguridad Informatica -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-shield-alert-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Seguridad</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="(item, i) in seguridad"
+            :key="i"
+            :to="item.action"
+          >
+            <v-list-item-content class="ml-14">
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+      <!-- Telematica -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-server">
+          <template v-slot:activator>
+            <v-list-item-title>Telemática</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="(item, i) in telematica"
+            :key="i"
+            :to="item.action"
+          >
+            <v-list-item-content class="ml-14">
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
       <!-- <template v-slot:append>
         <div class="pa-2">
           <v-btn block text>
@@ -155,11 +200,17 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in profile" :key="index">
-            <v-list-item-avatar>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-avatar>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
+          <v-list-item>
+            <v-btn text>
+              <v-icon class="mr-3">mdi-account-box-outline</v-icon>
+              Perfil</v-btn
+            >
+          </v-list-item>
+          <v-list-item>
+            <v-btn @click="logoUt" text>
+              <v-icon class="mr-3">mdi-logout</v-icon>
+              Logout</v-btn
+            >
           </v-list-item>
         </v-list>
       </v-menu>
@@ -183,29 +234,21 @@ export default {
   data: () => ({
     drawer: null,
     myImage: require("../../assets/img/avatar.jpg"),
-    security: [
-      {
-        text: "Roles",
-        icon: "mdi-shield-account-outline",
-        action: "/admin/roles",
-      },
-      {
-        text: "Usuarios",
-        icon: "mdi-account-outline",
-        action: "/admin/usuarios",
-      },
-    ],
     aplicaciones: [
       {
-        text: "Aplicación",
+        text: "Aplicación OK",
         icon: "mdi-clock",
-        action: "/admin/aplicacion",
+        action: { path: "aplicacion" },
       },
-      { text: "Módulo", icon: "mdi-account" },
-      { text: "Informáticas", icon: "mdi-flag" },
+      { text: "Módulo OK", icon: "mdi-account", action: { path: "modulo" } },
+      {
+        text: "Informáticas",
+        icon: "mdi-flag",
+        action: { path: "informaticas" },
+      },
     ],
     automatica: [
-      { text: "Órgano", icon: "mdi-clock", action: "/login" },
+      { text: "Órgano", icon: "mdi-clock", action: { path: "organo" } },
       { text: "Proyecto", icon: "mdi-account" },
       { text: "Informáticas", icon: "mdi-flag" },
     ],
@@ -226,8 +269,12 @@ export default {
       { text: "Repetidor", icon: "mdi-flag" },
     ],
     administracion: [
-      { text: "Entidad", icon: "mdi-account" },
-      { text: "Departamento", icon: "mdi-flag" },
+      { text: "Entidad", icon: "mdi-account", action: "/admin/entidad" },
+      {
+        text: "Departamento",
+        icon: "mdi-flag",
+        action: { path: "departamento" },
+      },
       { text: "Área", icon: "mdi-account" },
       { text: "Perfil", icon: "mdi-flag" },
     ],
@@ -247,10 +294,32 @@ export default {
         number: 5,
       },
     ],
-    profile: [
-      { title: "Perfil", icon: "mdi-account-box-outline" },
-      { title: "Cerrar Sesión", icon: "mdi-logout" },
+    ofimatica: [
+      { text: "Contrato Mantenimiento" },
+      { text: "Expediente" },
+      { text: "Disco Duro" },
+      { text: "Ram" },
+      { text: "Fuente" },
+      { text: "Motherboard" },
+      { text: "Modelo del Procesador" },
+      { text: "Procesador" },
+      { text: "Impresora" },
+      { text: "Ups " },
+      { text: "Tipo Periférico" },
+      { text: "Periférico" },
     ],
+    humanos: [{ text: "Trabajador" }, { text: "Certificación" }],
+    seguridad: [
+      { text: "Informáticas" },
+      { text: "Escaneo de Red" },
+      { text: "Antivirus" },
+    ],
+    telematica: [{ text: "Telemática" }, { text: "Red" }],
   }),
+  methods: {
+    logoUt() {
+      this.$store.dispatch("logoUt");
+    },
+  },
 };
 </script>

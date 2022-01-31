@@ -9,16 +9,16 @@
       disable-sort
       loading-text="Cargando... Por favor espere"
       :headers="headers"
-      :items="aplicacion"
+      :items="organo"
       :items-per-page="10"
       :footer-props="{
         'items-per-page-options': [10, 15, 20],
-        'items-per-page-text': 'Aplicaciones por páginas',
+        'items-per-page-text': 'Módulos por páginas',
       }"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Usuarios</v-toolbar-title>
+          <v-toolbar-title>Módulos</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog persistent v-model="dialog" max-width="500px">
@@ -32,7 +32,7 @@
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
               </v-card-title>
-              <v-form v-model="valid" @submit.stop.prevent="save">
+              <v-form @submit.stop.prevent="save">
                 <v-card-text>
                   <v-container>
                     <v-row>
@@ -40,14 +40,6 @@
                         <v-text-field
                           v-model="editedItem.nombre"
                           label="Nombre"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="editedItem.version"
-                          label="Versión"
-                          :rules="[rules.required]"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -59,12 +51,7 @@
                   <v-btn color="red darken-1" outlined @click="close">
                     Cancelar
                   </v-btn>
-                  <v-btn
-                    color="primary"
-                    :disabled="!valid"
-                    type="submit"
-                    @click.prevent="save"
-                  >
+                  <v-btn color="primary" type="submit" @click.prevent="save">
                     Guardar
                   </v-btn>
                 </v-card-actions>
@@ -74,15 +61,15 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="headline"
-                >¿Estás seguro de borrar este registro de forma
-                permanente?</v-card-title
-              >
+                >¿Estás seguro de borrar este registro de <br />
+                forma permanente?
+              </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn outlined @click="closeDelete">Cancelar</v-btn>
                 <v-btn depressed color="error" @click="deleteItemConfirm"
-                  >Borrar</v-btn
-                >
+                  >Borrar
+                </v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -122,7 +109,7 @@
         </v-tooltip>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reinicar </v-btn>
+        <v-btn color="primary" @click="initialize"> Reinicar</v-btn>
       </template>
     </v-data-table>
     <v-snackbar top v-model="snackbar" :color="snackColor" :timeout="timeout">
@@ -148,11 +135,13 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
+
 export default {
   data: () => ({
     search: "",
     dialog: false,
-    loading: false,
+
     dialogDelete: false,
     text: "",
     snackbar: false,
@@ -175,20 +164,21 @@ export default {
         value: "id",
       },
       { text: "Nombre", value: "nombre" },
-      { text: "Versión", value: "version" },
+      { text: "Tipo", value: "tipo" },
       { text: "Acciones", value: "actions", sortable: false },
     ],
+    organo: [],
     aplicacion: [],
     editedIndex: -1,
     editedItem: {
       id: "",
       nombre: "",
-      version: "",
+      tipo: "",
     },
     defaultItem: {
       id: "",
       nombre: "",
-      version: "",
+      tipo: "",
     },
   }),
 
@@ -196,6 +186,7 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva Aplicación" : "Editar Aplicación";
     },
+    ...mapState(["loading"]),
   },
 
   watch: {
@@ -213,44 +204,23 @@ export default {
 
   methods: {
     async initialize() {
-      axios.interceptors.request.use(
-        (config) => {
-          this.loading = true;
-          return config;
-        },
-        (error) => {
-          // Do something with request error
-          return Promise.reject(error);
-        }
-      );
-
-      // Add a response interceptor
-      axios.interceptors.response.use(
-        (response) => {
-          this.loading = false;
-          return response;
-        },
-        (error) => {
-          this.loading = false;
-          return Promise.reject(error);
-        }
-      );
       await axios
-        .get("http://localhost:8000/api/v1.0/aplicaciones/aplicacion/", {})
+        .get("http://localhost:8000/api/v1.0/automatica/organo_proyecto/")
         .then((res) => {
-          this.aplicacion = res.data;
+          this.organo = res.data;
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
     },
 
     editItem(item) {
-      this.editedIndex = this.aplicacion.indexOf(item);
+      this.editedIndex = this.organo.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.aplicacion.indexOf(item);
+      this.editedIndex = this.organo.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
@@ -258,12 +228,12 @@ export default {
     async deleteItemConfirm() {
       await axios
         .delete(
-          `http://localhost:8000/api/v1.0/aplicaciones/aplicacion/${this.editedItem.id}/`
+          `http://localhost:8000/api/v1.0/automatica/organo_proyecto/${this.editedItem.id}/`
         )
         .then((res) => {
-          this.aplicacion.splice(this.editedIndex, 1);
+          this.organo.splice(this.editedIndex, 1);
           (this.snackbar = true),
-            (this.text = "Aplicación eliminada"),
+            (this.text = "Módulo eliminado"),
             (this.snackColor = "success");
           this.icon = true;
         })
@@ -296,7 +266,7 @@ export default {
       if (this.editedIndex > -1) {
         await axios
           .put(
-            `http://localhost:8000/api/v1.0/aplicaciones/aplicacion/${this.editedItem.id}/`,
+            `http://localhost:8000/api/v1.0/automatica/organo_proyecto/${this.editedItem.id}/`,
             this.editedItem
           )
           .then((res) => {
@@ -315,11 +285,11 @@ export default {
       } else {
         await axios
           .post(
-            "http://localhost:8000/api/v1.0/aplicaciones/aplicacion/",
+            `http://localhost:8000/api/v1.0/automatica/organo_proyecto/`,
             this.editedItem
           )
           .then((res) => {
-            this.aplicacion.push(res.data);
+            this.organo.push(res.data);
             (this.snackbar = true),
               (this.text = "Aplicación añadida"),
               (this.snackColor = "success");

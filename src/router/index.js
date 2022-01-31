@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store/index';
+;
+
 // import Home from '../views/Home.vue'
 
 import NProgress from "nprogress/nprogress.js"
 import "nprogress/nprogress.css"
+
+// routes 
 
 Vue.use(VueRouter)
 
@@ -23,14 +28,12 @@ const routes = [
     redirect: "/login",
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue')
-  },
-  {
     path: '/admin',
     name: 'Admin',
     redirect: "/admin/inicio",
+    // meta: {
+    //   requiredAuth: true
+    // },
     component: () => import('../components/layout/Dashboard.vue'),
     children: 
     [
@@ -42,8 +45,34 @@ const routes = [
       {
         path: 'aplicacion',
         name: 'Aplicacion',
-        component: () => import('../views/Aplicacion.vue')
-      }
+        component: () => import('../components/Aplicaciones/Aplicacion.vue')
+      },
+      {
+        path: 'modulo',
+        name: 'Modulo',
+        component: () => import('../components/Aplicaciones/Modulo.vue')
+      },
+      {
+        path: 'informaticas',
+        name: 'Informaticas',
+        component: () => import('../components/Aplicaciones/Informaticas.vue')
+      },
+      
+      {
+        path: 'entidad',
+        name: 'Entidad',
+        component: () => import('../components/Administracion/Entidad.vue')
+      },
+      {
+        path: 'organo',
+        name: 'Organo',
+        component: () => import('../components/Automatica/Organo.vue')
+      },
+       {
+        path: 'departamento',
+        name: 'Departamento',
+        component: () => import('../components/Administracion/Departamento.vue')
+      },
     ]
   }
 ]
@@ -56,6 +85,12 @@ const router = new VueRouter({
 
 export default router
 
+router.beforeEach( (to,from, next) => {
+  if (to.matched.some(record => record.meta.requiredAuth && !store.state.isAuthenticated)) {
+    next({ name: 'Login' })
+  }
+  else next()
+})
 router.beforeResolve((to, from, next) => {
   if (to.path) {
     NProgress.start()

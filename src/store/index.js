@@ -13,6 +13,7 @@ export default new Vuex.Store({
         refresh_token: '',
         access_token: '',
         loggedInUser: {},
+        loading: false,
         isAuthenticated: false
     },
     mutations: {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
             state.loggedInUser = {};
             state.isAuthenticated = false;
 
+        },
+        setloading: function (state, loading) {
+            state.loading = loading
         }
     },
     actions: {
@@ -80,7 +84,7 @@ export default new Vuex.Store({
                     if (response.status === 200) {
                         // commit("setLoggedInUser", response.data);
                         console.log(response.data)
-                        router.push({name: "Home"});
+                        router.push({name: "Admin"});
                     }
 
                 });
@@ -88,15 +92,17 @@ export default new Vuex.Store({
                 console.log(e.response);
             }
         },
-        logoUt: ({commit})=>{
+        logoUt: ({commit}) => {
             commit("clearUserData")
+            router.push("/login");
         }
     },
     getters: {
         loggedInUser: state => state.loggedInUser,
         isAuthenticated: state => state.isAuthenticated,
         accessToken: state => state.access_token,
-        refreshToken: state => state.refresh_token
+        refreshToken: state => state.refresh_token,
+
     }
 
 })
