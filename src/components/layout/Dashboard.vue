@@ -5,176 +5,180 @@
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
     >
-      <!-- Administracion -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-home-edit-outline">
-          <template v-slot:activator>
-            <v-list-item-title>Administración</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in administracion"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Ofimática -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-desktop-tower-monitor">
-          <template v-slot:activator>
-            <v-list-item-title>Ofimática</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in ofimatica"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Comunicaciones -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-radio-tower">
-          <template v-slot:activator>
-            <v-list-item-title>Comunicación</v-list-item-title>
-          </template>
-          <!-- redes -->
-          <v-list-group no-action sub-group>
+      <vuescroll>
+        <!-- Administracion -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-home-edit-outline">
             <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Redes</v-list-item-title>
-              </v-list-item-content>
+              <v-list-item-title>Administración</v-list-item-title>
             </template>
 
-            <v-list-item v-for="(item, i) in redes" :key="i" link>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+            <v-list-item
+              v-for="(item, i) in administracion"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <!-- telefonia -->
-          <v-list-group no-action sub-group>
+        </v-list>
+        <!-- Ofimática -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-desktop-tower-monitor">
             <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Telefonía</v-list-item-title>
-              </v-list-item-content>
+              <v-list-item-title>Ofimática</v-list-item-title>
             </template>
 
-            <v-list-item v-for="(item, i) in telefonia" :key="i" link>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+            <v-list-item
+              v-for="(item, i) in ofimatica"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <!-- radio -->
-          <!-- telefonia -->
-          <v-list-group no-action sub-group>
+        </v-list>
+        <!-- Comunicaciones -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-radio-tower">
             <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Radio</v-list-item-title>
-              </v-list-item-content>
+              <v-list-item-title>Comunicación</v-list-item-title>
+            </template>
+            <!-- redes -->
+            <v-list-group no-action sub-group>
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>Redes</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item v-for="(item, i) in redes" :key="i" link>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+            <!-- telefonia -->
+            <v-list-group no-action sub-group>
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>Telefonía</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item v-for="(item, i) in telefonia" :key="i" link>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+            <!-- radio -->
+            <!-- telefonia -->
+            <v-list-group no-action sub-group>
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>Radio</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item v-for="(item, i) in radio" :key="i" link>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+          </v-list-group>
+        </v-list>
+        <!-- Aplicaciones -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-apps">
+            <template v-slot:activator>
+              <v-list-item-title>Aplicaciones</v-list-item-title>
             </template>
 
-            <v-list-item v-for="(item, i) in radio" :key="i" link>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+            <v-list-item
+              v-for="(item, i) in aplicaciones"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list-group>
-        </v-list-group>
-      </v-list>
-      <!-- Aplicaciones -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-apps">
-          <template v-slot:activator>
-            <v-list-item-title>Aplicaciones</v-list-item-title>
-          </template>
+        </v-list>
+        <!-- Automática -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-head-cog-outline">
+            <template v-slot:activator>
+              <v-list-item-title>Automática</v-list-item-title>
+            </template>
 
-          <v-list-item
-            v-for="(item, i) in aplicaciones"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Automática -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-head-cog-outline">
-          <template v-slot:activator>
-            <v-list-item-title>Automática</v-list-item-title>
-          </template>
+            <v-list-item
+              v-for="(item, i) in automatica"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+        <!-- Recurso humanos -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-account-cog-outline">
+            <template v-slot:activator>
+              <v-list-item-title>Recursos.H</v-list-item-title>
+            </template>
 
-          <v-list-item
-            v-for="(item, i) in automatica"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
+            <v-list-item
+              v-for="(item, i) in humanos"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+        <!-- Seguridad Informatica -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-shield-alert-outline">
+            <template v-slot:activator>
+              <v-list-item-title>Seguridad</v-list-item-title>
+            </template>
 
-      <!-- Recurso humanos -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-account-cog-outline">
-          <template v-slot:activator>
-            <v-list-item-title>Recursos.H</v-list-item-title>
-          </template>
+            <v-list-item
+              v-for="(item, i) in seguridad"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+        <!-- Telematica -->
+        <v-list dense>
+          <v-list-group :value="false" prepend-icon="mdi-server">
+            <template v-slot:activator>
+              <v-list-item-title>Telemática</v-list-item-title>
+            </template>
 
-          <v-list-item v-for="(item, i) in humanos" :key="i" :to="item.action">
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Seguridad Informatica -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-shield-alert-outline">
-          <template v-slot:activator>
-            <v-list-item-title>Seguridad</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in seguridad"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Telematica -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-server">
-          <template v-slot:activator>
-            <v-list-item-title>Telemática</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in telematica"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
+            <v-list-item
+              v-for="(item, i) in telematica"
+              :key="i"
+              :to="item.action"
+            >
+              <v-list-item-content class="ml-14">
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+      </vuescroll>
     </v-navigation-drawer>
-
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
@@ -262,7 +266,11 @@
 }
 </style>
 <script>
+import vuescroll from "vuescroll";
 export default {
+  components: {
+    vuescroll,
+  },
   data: () => ({
     drawer: null,
     myImage: require("../../assets/img/avatar.jpg"),
