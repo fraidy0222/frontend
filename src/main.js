@@ -15,7 +15,7 @@ axiosSetUp()
 Vue.prototype.$vuescrollConfig = ({
   bar: {
     background: '#9E9E9E'
-  }
+  },
 })
 Vue.config.productionTip = false
 

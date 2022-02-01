@@ -32,7 +32,7 @@
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
               </v-card-title>
-              <v-form v-model="valid" @submit.stop.prevent="save">
+              <v-form ref="form" v-model="valid" @submit.stop.prevent="save">
                 <v-card-text>
                   <v-container>
                     <v-row>
@@ -260,6 +260,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.$refs.form.resetValidation();
       });
     },
 
@@ -268,6 +269,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.$refs.form.resetValidation();
       });
     },
 

@@ -7,45 +7,49 @@
     </v-row>
     <v-row>
       <v-col cols="12" sm="6">
-          <v-data-table
-            :headers="headers"
-            :items="departamento"
-            item-key="id"
-            :search="search"
-            no-results-text="No exite este elemento"
-            :loading="loading"
-            disable-sort
-            :items-per-page="10"
-            :footer-props="{
-              'items-per-page-options': [10, 15, 20],
-              'items-per-page-text': 'Departamentos por páginas',
-            }"
-            v-model="selectedRows"
-            class="elevation-1">
-              <template v-slot:item="{ item }">
-                <tr :class="selectedRows.indexOf(item.id)>-1 ? 'red' : ''" @click="rowClicked(item)">
-                    <td>{{item.id}}</td>
-                    <td>{{item.nombre}}</td>
-                    <td>
-                      <v-btn icon>
-                        <v-icon color="warning" class="mr-2" @click="editItem(item)">
-                          mdi-pencil
-                        </v-icon>
-                      </v-btn>
-                      <v-btn icon>
-                        <v-icon color="error" @click="deleteItem(item)">
-                          mdi-delete
-                        </v-icon>
-                      </v-btn>
-                    </td>
-                </tr>
-            </template>
-            <template v-slot:top>
-               <v-toolbar flat>
-            <v-toolbar-title>Departamento</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
-             <v-dialog persistent v-model="dialog" max-width="500px">
+        <v-data-table
+          :headers="headers"
+          :items="departamento"
+          item-key="id"
+          :search="search"
+          no-results-text="No exite este elemento"
+          :loading="loading"
+          disable-sort
+          :items-per-page="10"
+          :footer-props="{
+            'items-per-page-options': [10, 15, 20],
+            'items-per-page-text': 'Departamentos por páginas',
+          }"
+          v-model="selectedRows"
+          class="elevation-1"
+        >
+          <template v-slot:item="{ item }">
+            <tr
+              :class="selectedRows.indexOf(item.id) > -1 ? 'red' : ''"
+              @click="rowClicked(item)"
+            >
+              <td>{{ item.id }}</td>
+              <td>{{ item.nombre }}</td>
+              <td>
+                <v-btn icon>
+                  <v-icon color="warning" class="mr-2" @click="editItem(item)">
+                    mdi-pencil
+                  </v-icon>
+                </v-btn>
+                <v-btn icon>
+                  <v-icon color="error" @click="deleteItem(item)">
+                    mdi-delete
+                  </v-icon>
+                </v-btn>
+              </td>
+            </tr>
+          </template>
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>Departamento</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-spacer></v-spacer>
+              <v-dialog persistent v-model="dialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="primary"
@@ -94,7 +98,7 @@
                   </v-form>
                 </v-card>
               </v-dialog>
-          </v-toolbar>
+            </v-toolbar>
             <!-- Buscar Departemento -->
             <v-text-field
               v-model="search"
@@ -104,24 +108,24 @@
               hide-details
               class="mx-4"
             ></v-text-field>
-            </template>
-          </v-data-table>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-                <v-card>
-                  <v-card-title class="headline"
-                    >¿Estás seguro de borrar este registro de <br />
-                    forma permanente?
-                  </v-card-title>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn outlined @click="closeDelete">Cancelar</v-btn>
-                    <v-btn depressed color="error" @click="deleteItemConfirm"
-                      >Borrar
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                  </v-card-actions>
-                </v-card>
-          </v-dialog>
+          </template>
+        </v-data-table>
+        <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-card>
+            <v-card-title class="headline"
+              >¿Estás seguro de borrar este registro de <br />
+              forma permanente?
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn outlined @click="closeDelete">Cancelar</v-btn>
+              <v-btn depressed color="error" @click="deleteItemConfirm"
+                >Borrar
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
       <v-col cols="12" sm="6">
         <v-data-table
@@ -280,7 +284,7 @@
 </template>
 
 <style lang="css" scoped>
-.row-table{
+.row-table {
   color: white;
   background-color: red;
   margin-right: 20px;
@@ -403,14 +407,14 @@ export default {
     //   const rowClass = 'myclass';
     //   return rowClass
     // },
-     rowClicked(row) {
+    rowClicked(row) {
       this.toggleSelection(row.id);
       // console.log(row);
     },
-     toggleSelection(keyID) {
+    toggleSelection(keyID) {
       if (this.selectedRows.includes(keyID)) {
         this.selectedRows = this.selectedRows.filter(
-          selectedKeyID => selectedKeyID !== keyID
+          (selectedKeyID) => selectedKeyID !== keyID
         );
       } else {
         this.selectedRows.push(keyID);
@@ -471,6 +475,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.$refs.form.resetValidation();
       });
     },
 
@@ -479,6 +484,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.$refs.form.resetValidation();
       });
     },
     async save() {
@@ -561,6 +567,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem2 = Object.assign({}, this.defaultItem2);
         this.editedIndex2 = -1;
+        this.$refs.form.resetValidation();
       });
     },
 
@@ -569,6 +576,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem2 = Object.assign({}, this.defaultItem2);
         this.editedIndex2 = -1;
+        this.$refs.form.resetValidation();
       });
     },
     async save2() {
