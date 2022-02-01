@@ -7,30 +7,121 @@
     </v-row>
     <v-row>
       <v-col cols="12" sm="6">
-        <v-card class="mx-auto">
-          <v-toolbar flat>
+          <v-data-table
+            :headers="headers"
+            :items="departamento"
+            item-key="id"
+            :search="search"
+            no-results-text="No exite este elemento"
+            :loading="loading"
+            disable-sort
+            :items-per-page="10"
+            :footer-props="{
+              'items-per-page-options': [10, 15, 20],
+              'items-per-page-text': 'Departamentos por páginas',
+            }"
+            v-model="selectedRows"
+            class="elevation-1">
+              <template v-slot:item="{ item }">
+                <tr :class="selectedRows.indexOf(item.id)>-1 ? 'red' : ''" @click="rowClicked(item)">
+                    <td>{{item.id}}</td>
+                    <td>{{item.nombre}}</td>
+                    <td>
+                      <v-btn icon>
+                        <v-icon color="warning" class="mr-2" @click="editItem(item)">
+                          mdi-pencil
+                        </v-icon>
+                      </v-btn>
+                      <v-btn icon>
+                        <v-icon color="error" @click="deleteItem(item)">
+                          mdi-delete
+                        </v-icon>
+                      </v-btn>
+                    </td>
+                </tr>
+            </template>
+            <template v-slot:top>
+               <v-toolbar flat>
             <v-toolbar-title>Departamento</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+             <v-dialog persistent v-model="dialog" max-width="500px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    class="mb-2"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-plus</v-icon>
+                    Añadir
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                  </v-card-title>
+                  <v-form v-model="valid" @submit.stop.prevent="save">
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12">
+                            <v-text-field
+                              v-model="editedItem.nombre"
+                              label="Nombre"
+                              :rules="[rules.required]"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="red darken-1" outlined @click="close">
+                        Cancelar
+                      </v-btn>
+                      <v-btn
+                        color="primary"
+                        :disabled="!valid"
+                        type="submit"
+                        @click.prevent="save"
+                      >
+                        Guardar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-form>
+                </v-card>
+              </v-dialog>
           </v-toolbar>
-          <v-list>
-            <v-list-item-group multiple color="indigo">
-              <v-list-item v-for="(item, i) in departamento" :key="i">
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.nombre"></v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-checkbox
-                    :input-value="active"
-                    color="deep-purple accent-4"
-                  ></v-checkbox>
-                </v-list-item-action>
-                <v-list-item-action>
-                  <v-checkbox color="deep-purple accent-4"></v-checkbox>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
+            <!-- Buscar Departemento -->
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar..."
+              single-line
+              hide-details
+              class="mx-4"
+            ></v-text-field>
+            </template>
+          </v-data-table>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-card>
+                  <v-card-title class="headline"
+                    >¿Estás seguro de borrar este registro de <br />
+                    forma permanente?
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn outlined @click="closeDelete">Cancelar</v-btn>
+                    <v-btn depressed color="error" @click="deleteItemConfirm"
+                      >Borrar
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </v-card>
+          </v-dialog>
       </v-col>
       <v-col cols="12" sm="6">
         <v-data-table
@@ -43,7 +134,6 @@
           loading-text="Cargando... Por favor espere"
           :headers="headers2"
           :items="area"
-          :item-class="active"
           :items-per-page="10"
           :footer-props="{
             'items-per-page-options': [10, 15, 20],
@@ -72,7 +162,7 @@
                   <v-card-title>
                     <span class="headline">{{ formTitle2 }}</span>
                   </v-card-title>
-                  <v-form v-model="valid" @submit.stop.prevent="save2">
+                  <v-form v-model="valid2" @submit.stop.prevent="save2">
                     <v-card-text>
                       <v-container>
                         <v-row>
@@ -189,6 +279,13 @@
   </div>
 </template>
 
+<style lang="css" scoped>
+.row-table{
+  color: white;
+  background-color: red;
+  margin-right: 20px;
+}
+</style>
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
@@ -198,8 +295,7 @@ export default {
   data: () => ({
     search: "",
     dialog: false,
-    singleSelect: false,
-    selected: [],
+    selectedRows: [],
     dialogDelete: false,
     text: "",
     snackbar: false,
@@ -302,6 +398,24 @@ export default {
   },
 
   methods: {
+    // myClass (item) {
+    //   console.log(item);
+    //   const rowClass = 'myclass';
+    //   return rowClass
+    // },
+     rowClicked(row) {
+      this.toggleSelection(row.id);
+      // console.log(row);
+    },
+     toggleSelection(keyID) {
+      if (this.selectedRows.includes(keyID)) {
+        this.selectedRows = this.selectedRows.filter(
+          selectedKeyID => selectedKeyID !== keyID
+        );
+      } else {
+        this.selectedRows.push(keyID);
+      }
+    },
     async initialize() {
       await axios
         .get("http://localhost:8000/api/v1.0/administracion/departamento/")

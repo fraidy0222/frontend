@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-data-table
-      v-model="selected"
       item-key="name"
       class="elevation-1"
       :search="search"
@@ -11,8 +10,6 @@
       loading-text="Cargando... Por favor espere"
       :headers="headers"
       :items="modulo"
-      :single-select="singleSelect"
-      show-select
       :items-per-page="10"
       :footer-props="{
         'items-per-page-options': [10, 15, 20],
@@ -168,8 +165,6 @@ export default {
     dialog: false,
     dialogDelete: false,
     text: "",
-    singleSelect: false,
-    selected: [],
     snackbar: false,
     snackColor: "",
     timeout: 2000,

@@ -5,60 +5,6 @@
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
     >
-      <!-- Aplicaciones -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-apps">
-          <template v-slot:activator>
-            <v-list-item-title>Aplicaciones</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in aplicaciones"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Automática -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-head-cog-outline">
-          <template v-slot:activator>
-            <v-list-item-title>Automática</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in automatica"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-      <!-- Comunicaciones -->
-      <v-list dense>
-        <v-list-group :value="false" prepend-icon="mdi-radio-tower">
-          <template v-slot:activator>
-            <v-list-item-title>Comunicación</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in comunicaciones"
-            :key="i"
-            :to="item.action"
-          >
-            <v-list-item-content class="ml-14">
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
       <!-- Administracion -->
       <v-list dense>
         <v-list-group :value="false" prepend-icon="mdi-home-edit-outline">
@@ -95,6 +41,88 @@
           </v-list-item>
         </v-list-group>
       </v-list>
+      <!-- Comunicaciones -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-radio-tower">
+          <template v-slot:activator>
+            <v-list-item-title>Comunicación</v-list-item-title>
+          </template>
+          <!-- redes -->
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Redes</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="(item, i) in redes" :key="i" link>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+          <!-- telefonia -->
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Telefonía</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="(item, i) in telefonia" :key="i" link>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+          <!-- radio -->
+          <!-- telefonia -->
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Radio</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="(item, i) in radio" :key="i" link>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+      </v-list>
+      <!-- Aplicaciones -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-apps">
+          <template v-slot:activator>
+            <v-list-item-title>Aplicaciones</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="(item, i) in aplicaciones"
+            :key="i"
+            :to="item.action"
+          >
+            <v-list-item-content class="ml-14">
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+      <!-- Automática -->
+      <v-list dense>
+        <v-list-group :value="false" prepend-icon="mdi-head-cog-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Automática</v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="(item, i) in automatica"
+            :key="i"
+            :to="item.action"
+          >
+            <v-list-item-content class="ml-14">
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+
       <!-- Recurso humanos -->
       <v-list dense>
         <v-list-group :value="false" prepend-icon="mdi-account-cog-outline">
@@ -145,14 +173,6 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <!-- <template v-slot:append>
-        <div class="pa-2">
-          <v-btn block text>
-            <v-icon>mdi-logout</v-icon>
-            Cerrar Sesión
-          </v-btn>
-        </div>
-      </template> -->
     </v-navigation-drawer>
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app>
@@ -203,7 +223,7 @@
           <v-list-item>
             <v-btn text>
               <v-icon class="mr-3">mdi-account-box-outline</v-icon>
-              Perfil</v-btn
+              Usuario</v-btn
             >
           </v-list-item>
           <v-list-item>
@@ -227,6 +247,18 @@
 .nombre {
   color: rgba(0, 0, 0, 0.87);
   text-decoration: none;
+}
+.v-list-item--dense .v-list-item__title,
+.v-list-item--dense .v-list-item__subtitle,
+.v-list--dense .v-list-item .v-list-item__title,
+.v-list--dense .v-list-item .v-list-item__subtitle {
+  font-weight: 600;
+}
+.v-application--is-ltr
+  .v-list-group--no-action.v-list-group--sub-group
+  > .v-list-group__items
+  > .v-list-item {
+  margin-left: -20px;
 }
 </style>
 <script>
@@ -252,22 +284,22 @@ export default {
       { text: "Proyecto", icon: "mdi-account" },
       { text: "Informáticas", icon: "mdi-flag" },
     ],
-    comunicaciones: [
-      { text: "Licencia Red", icon: "mdi-clock", action: "/login" },
-      { text: "Fuente Planta Tronki", icon: "mdi-account" },
-      { text: "Planta Fija", icon: "mdi-flag" },
-      { text: "Tronki Fijo", icon: "mdi-clock", action: "/login" },
-      { text: "Tipo Equipo", icon: "mdi-account" },
-      { text: "Línea Telefónica", icon: "mdi-flag" },
-      { text: "Telefonía Movil", icon: "mdi-clock", action: "/login" },
-      { text: "Equipo Conectividad", icon: "mdi-account" },
-      { text: "Telefonía Fija", icon: "mdi-flag" },
-      { text: "Telefonía Alternativa", icon: "mdi-clock", action: "/login" },
-      { text: "Tronki", icon: "mdi-account" },
-      { text: "WalkieTalkie", icon: "mdi-flag" },
-      { text: "Pizzara", icon: "mdi-account" },
-      { text: "Repetidor", icon: "mdi-flag" },
-    ],
+    // comunicaciones: [
+    //   { text: "Licencia Red", icon: "mdi-clock", action: "/login" },
+    //   { text: "Fuente Planta Tronki", icon: "mdi-account" },
+    //   { text: "Planta Fija", icon: "mdi-flag" },
+    //   { text: "Tronki Fijo", icon: "mdi-clock", action: "/login" },
+    //   { text: "Tipo Equipo", icon: "mdi-account" },
+    //   { text: "Línea Telefónica", icon: "mdi-flag" },
+    //   { text: "Telefonía Movil", icon: "mdi-clock", action: "/login" },
+    //   { text: "Equipo Conectividad", icon: "mdi-account" },
+    //   { text: "Telefonía Fija", icon: "mdi-flag" },
+    //   { text: "Telefonía Alternativa", icon: "mdi-clock", action: "/login" },
+    //   { text: "Tronki", icon: "mdi-account" },
+    //   { text: "WalkieTalkie", icon: "mdi-flag" },
+    //   { text: "Pizzara", icon: "mdi-account" },
+    //   { text: "Repetidor", icon: "mdi-flag" },
+    // ],
     administracion: [
       { text: "Entidad", icon: "mdi-account", action: "/admin/entidad" },
       {
@@ -275,8 +307,7 @@ export default {
         icon: "mdi-flag",
         action: { path: "departamento" },
       },
-      { text: "Área", icon: "mdi-account" },
-      { text: "Perfil", icon: "mdi-flag" },
+      { text: "Usuario" },
     ],
     files: [
       {
@@ -295,18 +326,22 @@ export default {
       },
     ],
     ofimatica: [
-      { text: "Contrato Mantenimiento" },
-      { text: "Expediente" },
-      { text: "Disco Duro" },
+      { text: "Expediente PC" },
+      { text: "Comunicaciones" },
       { text: "Ram" },
-      { text: "Fuente" },
-      { text: "Motherboard" },
-      { text: "Modelo del Procesador" },
-      { text: "Procesador" },
-      { text: "Impresora" },
-      { text: "Ups " },
-      { text: "Tipo Periférico" },
-      { text: "Periférico" },
+    ],
+    redes: [{ text: "Equipamiento" }, { text: "Licencia de red" }],
+    telefonia: [
+      { text: "Telefonía fija" },
+      { text: "Telefonía móvil" },
+      { text: "Telefonía fija alternativa" },
+      { text: "Pizzara" },
+    ],
+    radio: [
+      { text: "Planta" },
+      { text: "Tronki" },
+      { text: "WalkieTalkie" },
+      { text: "Repetidor" },
     ],
     humanos: [{ text: "Trabajador" }, { text: "Certificación" }],
     seguridad: [
